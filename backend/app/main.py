@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 
+from app.database import engine, Base
+from app import models
 from app.routes import garages
+
+
+Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI(

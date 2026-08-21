@@ -1,4 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from app.database import get_db
+from app.models import Garage
+
 
 router = APIRouter(
     prefix="/api/garages",
@@ -7,18 +12,7 @@ router = APIRouter(
 
 
 @router.get("/")
-def get_garages():
-    return [
-        {
-            "id": 1,
-            "name": "تعمیرگاه علی",
-            "address": "تهران، صادقیه",
-            "rating": 4.5
-        },
-        {
-            "id": 2,
-            "name": "تعمیرگاه محمد",
-            "address": "تهران، ستارخان",
-            "rating": 4.2
-        }
-    ]
+def get_garages(db: Session = Depends(get_db)):
+    garages = db.query(Garage).all()
+
+    return garages
