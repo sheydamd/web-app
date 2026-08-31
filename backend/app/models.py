@@ -1,49 +1,102 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
+from sqlalchemy import Column, Integer, String, Float, Boolean, Text
 
-from app.database import get_db
-from app.models import Garage
-from app.schemas import GarageCreate
+from app.database import Base
 
 
-router = APIRouter(
-    prefix="/api/garages",
-    tags=["Garages"]
-)
+class Garage(Base):
+    __tablename__ = "garages"
 
-
-@router.get("/")
-def get_garages(db: Session = Depends(get_db)):
-    garages = db.query(Garage).all()
-
-    return garages
-
-
-@router.get("/{garage_id}")
-def get_garage(
-    garage_id: int,
-    db: Session = Depends(get_db)
-):
-    garage = db.query(Garage).filter(Garage.id == garage_id).first()
-
-    return garage
-
-
-@router.post("/")
-def create_garage(
-    garage: GarageCreate,
-    db: Session = Depends(get_db)
-):
-    new_garage = Garage(
-        name=garage.name,
-        address=garage.address,
-        phone=garage.phone,
-        rating=garage.rating,
-        review_count=garage.review_count
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
     )
 
-    db.add(new_garage)
-    db.commit()
-    db.refresh(new_garage)
+    name = Column(
+        String,
+        nullable=False
+    )
 
-    return new_garage
+    address = Column(
+        String,
+        nullable=False
+    )
+
+    phone = Column(
+        String,
+        nullable=True
+    )
+
+    city = Column(
+        String,
+        nullable=True
+    )
+
+    latitude = Column(
+        Float,
+        nullable=True
+    )
+
+    longitude = Column(
+        Float,
+        nullable=True
+    )
+
+    rating = Column(
+        Float,
+        default=0
+    )
+
+    review_count = Column(
+        Integer,
+        default=0
+    )
+
+    website = Column(
+        String,
+        nullable=True
+    )
+
+    is_active = Column(
+        Boolean,
+        default=True
+    )
+
+    source = Column(
+        String,
+        nullable=True
+    )
+
+class Service(Base):
+    __tablename__ = "services"
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
+
+    name = Column(
+        String,
+        nullable=False
+    )
+
+    description = Column(
+        Text,
+        nullable=True
+    )
+
+    price_min = Column(
+        Integer,
+        nullable=True
+    )
+
+    price_max = Column(
+        Integer,
+        nullable=True
+    )
+
+    duration = Column(
+        String,
+        nullable=True
+    )

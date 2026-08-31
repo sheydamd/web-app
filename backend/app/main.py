@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-
+from app.routes import services
 from app.database import engine, Base
 from app import models
 from app.routes import garages
@@ -16,7 +16,7 @@ app = FastAPI(
 
 
 app.include_router(garages.router)
-
+app.include_router(services.router)
 
 @app.get("/")
 def root():
