@@ -1,12 +1,49 @@
-from sqlalchemy import Column, Integer, String, Float
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
-from app.database import Base
+from app.database import get_db
+from app.models import Garage
+from app.schemas import GarageCreate
 
 
-class Garage(Base):
-    __tablename__ = "garages"
+router = APIRouter(
+    prefix="/api/garages",
+    tags=["Garages"]
+)
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    address = Column(String, nullable=False)
-    rating = Column(Float, default=0)
+
+@router.get("/")
+def get_garages(db: Session = Depends(get_db)):
+    garages = db.query(Garage).all()
+
+    return garages
+
+
+@router.get("/{garage_id}")
+def get_garage(
+    garage_id: int,
+    db: Session = Depends(get_db)
+):
+    garage = db.query(Garage).filter(Garage.id == garage_id).first()
+
+    return garage
+
+
+@router.post("/")
+def create_garage(
+    garage: GarageCreate,
+    db: Session = Depends(get_db)
+):
+    new_garage = Garage(
+        name=garage.name,
+        address=garage.address,
+        phone=garage.phone,
+        rating=garage.rating,
+        review_count=garage.review_count
+    )
+
+    db.add(new_garage)
+    db.commit()
+    db.refresh(new_garage)
+
+    return new_garage
