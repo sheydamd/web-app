@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -13,9 +15,32 @@ router = APIRouter(
 
 @router.get("/")
 def get_garages(
+    city: Optional[str] = None,
+    name: Optional[str] = None,
+    page: int = 1,
+    limit: int = 10,
     db: Session = Depends(get_db)
 ):
-    garages = db.query(Garage).all()
+    query = db.query(Garage)
+
+    # Filter by city
+    if city:
+        query = query.filter(
+            Garage.city == city
+        )
+
+    # Search by garage name
+    if name:
+        query = query.filter(
+            Garage.name.ilike(
+                f"%{name}%"
+            )
+        )
+
+    # Pagination
+    skip = (page - 1) * limit
+
+    garages = query.offset(skip).limit(limit).all()
 
     return garages
 

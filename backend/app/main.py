@@ -1,9 +1,9 @@
 from fastapi import FastAPI
-from app.routes import services
-from app.database import engine, Base
-from app import models
-from app.routes import garages
 
+from app.database import Base, engine
+from app.routes import garages, services, garage_services
+from app.routes import garages, services, garage_services, users
+from app.routes import reviews
 
 Base.metadata.create_all(bind=engine)
 
@@ -17,6 +17,9 @@ app = FastAPI(
 
 app.include_router(garages.router)
 app.include_router(services.router)
+app.include_router(garage_services.router)
+app.include_router(users.router)
+app.include_router(reviews.router)
 
 @app.get("/")
 def root():
