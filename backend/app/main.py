@@ -4,7 +4,7 @@ from app.database import Base, engine
 from app.routes import garages, services, garage_services
 from app.routes import garages, services, garage_services, users
 from app.routes import reviews
-
+from app.routes import favorites
 Base.metadata.create_all(bind=engine)
 
 
@@ -20,6 +20,7 @@ app.include_router(services.router)
 app.include_router(garage_services.router)
 app.include_router(users.router)
 app.include_router(reviews.router)
+app.include_router(favorites.router)
 
 @app.get("/")
 def root():

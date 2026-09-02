@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CarFix - پیدا کردن تعمیرگاه</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <h1>CarFix</h1>
+            <p>پیدا کردن و مقایسه تعمیرگاه‌های خودرو</p>
+        </div>
+    </header>
+
+
+    <main class="container">
+
+        <section class="search-section">
+
+            <h2>تعمیرگاه موردنظر خود را پیدا کنید</h2>
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="نام تعمیرگاه..."
+                >
+
+                <select id="citySelect">
+                    <option value="">همه شهرها</option>
+                    <option value="تهران">تهران</option>
+                </select>
+
+                <button onclick="searchGarages()">
+                    جستجو
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <section class="garages-section">
+
+            <div class="section-header">
+                <h2>تعمیرگاه‌ها</h2>
+
+                <span id="resultCount"></span>
+            </div>
+
+            <div id="garageList" class="garage-list">
+                <p>در حال دریافت اطلاعات...</p>
+            </div>
+
+        </section>
+
+
+        <div class="pagination">
+
+            <button onclick="previousPage()">
+                قبلی
+            </button>
+
+            <span id="pageNumber">صفحه 1</span>
+
+            <button onclick="nextPage()">
+                بعدی
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <script src="app.js"></script>
+
+</body>
+</html>
